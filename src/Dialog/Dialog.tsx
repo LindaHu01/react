@@ -13,6 +13,9 @@ import {FocusKeys} from '@primer/behaviors'
 import Portal from '../Portal'
 import {useRefObjectAsForwardedRef} from '../hooks/useRefObjectAsForwardedRef'
 import {useId} from '../hooks/useId'
+import {ScrollableRegion} from '../internal/components/ScrollableRegion'
+
+/* Dialog Version 2 */
 
 const ANIMATION_DURATION = '200ms'
 
@@ -20,7 +23,7 @@ const ANIMATION_DURATION = '200ms'
  * Props that characterize a button to be rendered into the footer of
  * a Dialog.
  */
-export type DialogButtonProps = Omit<ButtonProps, 'children'> & {
+export type DialogButtonProps = Omit<ButtonProps, 'content'> & {
   /**
    * The type of Button element to use
    */
@@ -287,6 +290,22 @@ const _Dialog = React.forwardRef<HTMLDivElement, React.PropsWithChildren<DialogP
     [onClose],
   )
 
+  React.useEffect(() => {
+    const bodyOverflowStyle = document.body.style.overflow || ''
+    // If the body is already set to overflow: hidden, it likely means
+    // that there is already a modal open. In that case, we should bail
+    // so we don't re-enable scroll after the second dialog is closed.
+    if (bodyOverflowStyle === 'hidden') {
+      return
+    }
+
+    document.body.style.overflow = 'hidden'
+
+    return () => {
+      document.body.style.overflow = bodyOverflowStyle
+    }
+  }, [])
+
   const header = (renderHeader ?? DefaultHeader)(defaultedProps)
   const body = (renderBody ?? DefaultBody)(defaultedProps)
   const footer = (renderFooter ?? DefaultFooter)(defaultedProps)
@@ -306,7 +325,9 @@ const _Dialog = React.forwardRef<HTMLDivElement, React.PropsWithChildren<DialogP
             sx={sx}
           >
             {header}
-            {body}
+            <ScrollableRegion aria-labelledby={dialogLabelId} className="DialogOverflowWrapper">
+              {body}
+            </ScrollableRegion>
             {footer}
           </StyledDialog>
         </Backdrop>
@@ -353,15 +374,9 @@ const Footer = styled.div<SxProp>`
   display: flex;
   flex-flow: wrap;
   justify-content: flex-end;
+  gap: ${get('space.2')};
   z-index: 1;
   flex-shrink: 0;
-
-  button {
-    margin-left: ${get('space.1')};
-    &:first-child {
-      margin-left: 0;
-    }
-  }
 
   ${sx};
 `
@@ -387,6 +402,7 @@ const Buttons: React.FC<React.PropsWithChildren<{buttons: DialogButtonProps[]}>>
           <Button
             key={index}
             {...buttonProps}
+            // 'normal' value is equivalent to 'default', this is used for backwards compatibility
             variant={buttonType === 'normal' ? 'default' : buttonType}
             ref={autoFocus && autoFocusCount === 0 ? (autoFocusCount++, autoFocusRef) : null}
           >

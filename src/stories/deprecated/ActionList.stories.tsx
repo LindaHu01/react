@@ -46,7 +46,9 @@ export default meta
 
 const ErsatzOverlay = styled.div<{maxWidth?: string}>`
   border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 8px 24px rgba(149, 157, 165, 0.2);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.12),
+    0 8px 24px rgba(149, 157, 165, 0.2);
   overflow: hidden;
   max-width: ${({maxWidth}) => maxWidth || 'none'};
 `
@@ -359,9 +361,12 @@ SizeStressTestingStory.storyName = 'Size Stress Testing'
 
 type ReactRouterLikeLinkProps = {to: string; children: React.ReactNode}
 const ReactRouterLikeLink = forwardRef<HTMLAnchorElement, ReactRouterLikeLinkProps>(
-  ({to, ...props}: {to: string; children: React.ReactNode}, ref) => {
-    // eslint-disable-next-line jsx-a11y/anchor-has-content
-    return <a ref={ref} href={to} {...props} />
+  ({to, children, ...props}: {to: string; children: React.ReactNode}, ref) => {
+    return (
+      <a ref={ref} href={to} {...props}>
+        {children}
+      </a>
+    )
   },
 )
 

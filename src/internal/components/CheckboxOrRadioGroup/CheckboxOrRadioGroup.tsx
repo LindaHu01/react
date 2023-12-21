@@ -3,10 +3,11 @@ import styled from 'styled-components'
 import Box from '../../../Box'
 import ValidationAnimationContainer from '../ValidationAnimationContainer'
 import {get} from '../../../constants'
-import {useSSRSafeId} from '../../../utils/ssr'
+import {useId} from '../../../hooks/useId'
 import CheckboxOrRadioGroupCaption from './CheckboxOrRadioGroupCaption'
 import CheckboxOrRadioGroupLabel from './CheckboxOrRadioGroupLabel'
 import CheckboxOrRadioGroupValidation from './CheckboxOrRadioGroupValidation'
+import CheckboxOrRadioGroupContext from './CheckboxOrRadioGroupContext'
 import VisuallyHidden from '../../../_VisuallyHidden'
 import {useSlots} from '../../../hooks/useSlots'
 import {SxProp} from '../../../sx'
@@ -30,13 +31,6 @@ export type CheckboxOrRadioGroupProps = {
    */
   required?: boolean
 } & SxProp
-
-export type CheckboxOrRadioGroupContext = {
-  validationMessageId?: string
-  captionId?: string
-} & CheckboxOrRadioGroupProps
-
-export const CheckboxOrRadioGroupContext = React.createContext<CheckboxOrRadioGroupContext>({})
 
 const Body = styled.div`
   display: flex;
@@ -72,7 +66,7 @@ const CheckboxOrRadioGroup: React.FC<React.PropsWithChildren<CheckboxOrRadioGrou
   const captionChild = React.Children.toArray(children).find(child =>
     React.isValidElement(child) && child.type === CheckboxOrRadioGroupCaption ? child : null,
   )
-  const id = useSSRSafeId(idProp)
+  const id = useId(idProp)
   const validationMessageId = validationChild ? `${id}-validationMessage` : undefined
   const captionId = captionChild ? `${id}-caption` : undefined
 

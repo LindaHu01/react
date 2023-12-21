@@ -191,13 +191,24 @@ describe('PageLayout', () => {
       const pane = placeholder.parentNode
       const initialWidth = (pane as HTMLElement).style.getPropertyValue('--pane-width')
 
-      const divider = await screen.findByRole('separator')
+      const divider = await screen.findByRole('slider')
       // Moving divider should resize pane.
       fireEvent.mouseDown(divider)
       fireEvent.mouseMove(divider)
       fireEvent.mouseUp(divider)
       const finalWidth = (pane as HTMLElement).style.getPropertyValue('--pane-width')
       expect(finalWidth).not.toEqual(initialWidth)
+    })
+  })
+
+  describe('PageLayout.Content', () => {
+    it('should support a custom element type with the `as` prop', () => {
+      const {container} = render(
+        <PageLayout.Content as="div">
+          <main>Content</main>
+        </PageLayout.Content>,
+      )
+      expect(container.firstChild?.nodeName).toEqual('DIV')
     })
   })
 })

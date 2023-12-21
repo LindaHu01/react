@@ -19,26 +19,14 @@ const AvatarStackWrapper = styled.span<StyledAvatarStackWrapperProps>`
   --avatar-two-margin: calc(var(--avatar-stack-size) * -0.55);
   --avatar-three-margin: calc(var(--avatar-stack-size) * -0.85);
 
-  // this calc explained:
-  // 1. avatar size + the non-overlapping part of the second avatar
-  // 2. + the non-overlapping part of the second and third avatar
-  // 3. + the border widths of all previous avatars
-  --avatar-stack-three-plus-min-width: calc(
-    var(--avatar-stack-size) +
-      calc(
-        calc(var(--avatar-stack-size) + var(--avatar-two-margin)) +
-          calc(var(--avatar-stack-size) + var(--avatar-three-margin)) * 2
-      ) + calc(var(--avatar-border-width) * 3)
-  );
   display: flex;
   position: relative;
   height: var(--avatar-stack-size);
-  min-width: ${props => (props.count === 1 ? 'var(--avatar-stack-size)' : props.count === 2 ? '30px' : '38px')};
+  min-width: var(--avatar-stack-size);
 
   .pc-AvatarStackBody {
     display: flex;
     position: absolute;
-    width: var(--avatar-stack-three-plus-min-width);
   }
 
   .pc-AvatarItem {
@@ -46,11 +34,10 @@ const AvatarStackWrapper = styled.span<StyledAvatarStackWrapperProps>`
     flex-shrink: 0;
     height: var(--avatar-stack-size);
     width: var(--avatar-stack-size);
-    box-shadow: 0 0 0 var(--avatar-border-width) ${get('colors.canvas.default')};
+    box-shadow: 0 0 0 var(--avatar-border-width)
+      ${props => (props.count === 1 ? get('colors.avatar.border') : get('colors.canvas.default'))};
     position: relative;
     overflow: hidden;
-    transition: margin 0.2s ease-in-out, opacity 0.2s ease-in-out, visibility 0.2s ease-in-out,
-      box-shadow 0.1s ease-in-out;
 
     &:first-child {
       margin-left: 0;
@@ -93,8 +80,30 @@ const AvatarStackWrapper = styled.span<StyledAvatarStackWrapperProps>`
     );
   }
 
+  &.pc-AvatarStack--three {
+    // this calc explained:
+    // 1. avatar size + the non-overlapping part of the second avatar
+    // 2. + the non-overlapping part of the third avatar
+    min-width: calc(
+      var(--avatar-stack-size) +
+        calc(
+          calc(var(--avatar-stack-size) + var(--avatar-two-margin)) +
+            calc(var(--avatar-stack-size) + var(--avatar-three-margin))
+        )
+    );
+  }
+
   &.pc-AvatarStack--three-plus {
-    min-width: var(--avatar-stack-three-plus-min-width);
+    // this calc explained:
+    // 1. avatar size + the non-overlapping part of the second avatar
+    // 2. + the non-overlapping part of the third and fourth avatar
+    min-width: calc(
+      var(--avatar-stack-size) +
+        calc(
+          calc(var(--avatar-stack-size) + var(--avatar-two-margin)) +
+            calc(var(--avatar-stack-size) + var(--avatar-three-margin)) * 2
+        )
+    );
   }
 
   &.pc-AvatarStack--right {
@@ -118,7 +127,7 @@ const AvatarStackWrapper = styled.span<StyledAvatarStackWrapperProps>`
     .pc-AvatarStackBody {
       flex-direction: row-reverse;
 
-      &:hover {
+      &:not(.pc-AvatarStack--disableExpand):hover {
         .pc-AvatarItem {
           margin-right: ${get('space.1')}!important;
           margin-left: 0 !important;
@@ -138,11 +147,21 @@ const AvatarStackWrapper = styled.span<StyledAvatarStackWrapperProps>`
       margin-left: ${get('space.1')};
       opacity: 100%;
       visibility: visible;
-      box-shadow: 0 0 0 4px ${get('colors.canvas.default')};
+      ${props => (props.count === 1 ? '' : `box-shadow: 0 0 0 4px ${get('colors.canvas.default')};`)}
+      transition:
+        margin 0.2s ease-in-out,
+        opacity 0.2s ease-in-out,
+        visibility 0.2s ease-in-out,
+        box-shadow 0.1s ease-in-out;
+
       &:first-child {
         margin-left: 0;
       }
     }
+  }
+
+  .pc-AvatarStack--disableExpand {
+    position: relative;
   }
 
   ${sx};
@@ -168,7 +187,8 @@ const AvatarStack = ({children, alignRight, disableExpand, size, sx: sxProp = de
   const count = React.Children.count(children)
   const wrapperClassNames = clsx({
     'pc-AvatarStack--two': count === 2,
-    'pc-AvatarStack--three-plus': count > 2,
+    'pc-AvatarStack--three': count === 3,
+    'pc-AvatarStack--three-plus': count > 3,
     'pc-AvatarStack--right': alignRight,
   })
   const bodyClassNames = clsx('pc-AvatarStackBody', {

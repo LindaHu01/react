@@ -111,12 +111,20 @@ exports[`CheckboxGroup renders consistently 1`] = `
   mask-repeat: no-repeat;
   -webkit-mask-position: center;
   mask-position: center;
+  -webkit-animation: checkmarkOut 80ms cubic-bezier(0.65,0,0.35,1) forwards;
+  animation: checkmarkOut 80ms cubic-bezier(0.65,0,0.35,1) forwards;
 }
 
 .c6:checked,
 .c6:indeterminate {
   background: #0969da;
   border-color: #0969da;
+}
+
+.c6:checked::before,
+.c6:indeterminate::before {
+  -webkit-animation: checkmarkIn 80ms cubic-bezier(0.65,0,0.35,1) forwards 80ms;
+  animation: checkmarkIn 80ms cubic-bezier(0.65,0,0.35,1) forwards 80ms;
 }
 
 .c6:checked {
@@ -167,21 +175,6 @@ exports[`CheckboxGroup renders consistently 1`] = `
   outline-offset: 2px;
 }
 
-@media screen and (prefers-reduced-motion:no-preference) {
-  .c6::before {
-    -webkit-animation: checkmarkOut 80ms cubic-bezier(0.65,0,0.35,1) forwards;
-    animation: checkmarkOut 80ms cubic-bezier(0.65,0,0.35,1) forwards;
-  }
-}
-
-@media screen and (prefers-reduced-motion:no-preference) {
-  .c6:checked::before,
-  .c6:indeterminate::before {
-    -webkit-animation: checkmarkIn 80ms cubic-bezier(0.65,0,0.35,1) forwards 80ms;
-    animation: checkmarkIn 80ms cubic-bezier(0.65,0,0.35,1) forwards 80ms;
-  }
-}
-
 @media (forced-colors:active) {
   .c6:checked {
     background-color: canvastext;
@@ -218,7 +211,7 @@ exports[`CheckboxGroup renders consistently 1`] = `
             aria-invalid="false"
             aria-required="false"
             className="c6"
-            id="react-aria-2"
+            id=":r1:"
             name="one"
             onChange={[Function]}
             type="checkbox"
@@ -231,7 +224,7 @@ exports[`CheckboxGroup renders consistently 1`] = `
         >
           <label
             className="c8"
-            htmlFor="react-aria-2"
+            htmlFor=":r1:"
           >
             Choice one
           </label>
@@ -249,7 +242,7 @@ exports[`CheckboxGroup renders consistently 1`] = `
             aria-invalid="false"
             aria-required="false"
             className="c6"
-            id="react-aria-3"
+            id=":r2:"
             name="two"
             onChange={[Function]}
             type="checkbox"
@@ -262,7 +255,7 @@ exports[`CheckboxGroup renders consistently 1`] = `
         >
           <label
             className="c8"
-            htmlFor="react-aria-3"
+            htmlFor=":r2:"
           >
             Choice two
           </label>
@@ -280,7 +273,7 @@ exports[`CheckboxGroup renders consistently 1`] = `
             aria-invalid="false"
             aria-required="false"
             className="c6"
-            id="react-aria-4"
+            id=":r3:"
             name="three"
             onChange={[Function]}
             type="checkbox"
@@ -293,7 +286,7 @@ exports[`CheckboxGroup renders consistently 1`] = `
         >
           <label
             className="c8"
-            htmlFor="react-aria-4"
+            htmlFor=":r3:"
           >
             Choice three
           </label>

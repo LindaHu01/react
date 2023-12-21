@@ -139,12 +139,19 @@ module.exports = {
           {
             paths: [
               {
-                name: '@react-aria/ssr',
+                name: 'react',
+                importNames: ['useLayoutEffect'],
+                message:
+                  'Please use the `useIsomorphicLayoutEffect` hook from `src/hooks/useIsomorphicLayoutEffect.ts` instead',
+              },
+            ],
+            patterns: [
+              {
+                group: ['**/utils/ssr'],
                 importNames: ['useSSRSafeId'],
                 message: 'Please use the `useId` hook from `src/hooks/useId.ts` instead',
               },
             ],
-            patterns: [],
           },
         ],
       },
@@ -197,6 +204,7 @@ module.exports = {
         'no-unused-vars': 'off',
         'prettier/prettier': 'off',
         'react/jsx-no-undef': 'off',
+        'primer-react/direct-slot-children': 'off',
       },
     },
 

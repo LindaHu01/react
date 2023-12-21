@@ -1,6 +1,7 @@
 import Combobox from '@github/combobox-nav'
-import {useCallback, useEffect, useLayoutEffect, useRef, useState} from 'react'
+import {useCallback, useEffect, useRef, useState} from 'react'
 import {useId} from '../../hooks/useId'
+import useIsomorphicLayoutEffect from '../../utils/useIsomorphicLayoutEffect'
 
 export type ComboboxCommitEvent<T> = {
   /** The underlying `combobox-commit` event. */
@@ -54,6 +55,8 @@ type UseComboboxSettings<T> = {
  * `useCombobox` will set nearly all necessary attributes by effect, but you **must** set
  * `role="option"` on list items in order for them to be 'seen' by the combobox. Style the
  * currently highlighted option with the `[aria-selected="true"]` selector.
+ *
+ * @deprecated Will be removed in v37 (https://github.com/primer/react/issues/3604)
  */
 export const useCombobox = <T>({
   isOpen,
@@ -138,7 +141,7 @@ export const useCombobox = <T>({
     [onCommit, list],
   )
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const optionElements = getOptionElements()
     // Ensure each option has a unique ID (required by the Combobox class), but respect user provided IDs
     for (const [i, option] of optionElements.entries()) {

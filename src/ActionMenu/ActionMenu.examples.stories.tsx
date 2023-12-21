@@ -13,6 +13,11 @@ import {
   XIcon,
   CheckIcon,
   CopyIcon,
+  ArchiveIcon,
+  BookIcon,
+  CommentIcon,
+  RocketIcon,
+  WorkflowIcon,
 } from '@primer/octicons-react'
 
 export default {
@@ -30,7 +35,7 @@ export const GroupsAndDescriptions = () => {
 
   return (
     <ActionMenu open>
-      <ActionMenu.Button variant="default" trailingIcon={GearIcon}>
+      <ActionMenu.Button variant="default" trailingVisual={GearIcon}>
         Milestone
       </ActionMenu.Button>
       <ActionMenu.Overlay width="medium">
@@ -201,7 +206,7 @@ export const MixedSelection = () => {
 
   return (
     <ActionMenu>
-      <ActionMenu.Button leadingIcon={selectedOption ? selectedOption.icon : undefined}>
+      <ActionMenu.Button leadingVisual={selectedOption ? selectedOption.icon : undefined}>
         {selectedOption ? `Group by ${selectedOption.text}` : 'Group items by'}
       </ActionMenu.Button>
       <ActionMenu.Overlay width="medium">
@@ -307,3 +312,102 @@ export const DelayedMenuClose = () => {
     </>
   )
 }
+
+export const OnRightSide = () => (
+  <ActionMenu>
+    <ActionMenu.Button>Open menu</ActionMenu.Button>
+    <ActionMenu.Overlay width="medium" side="outside-right">
+      <ActionList>
+        <ActionList.Item onSelect={() => alert('Copy link clicked')}>
+          Copy link
+          <ActionList.TrailingVisual>⌘C</ActionList.TrailingVisual>
+        </ActionList.Item>
+        <ActionList.Item onSelect={() => alert('Quote reply clicked')}>
+          Quote reply
+          <ActionList.TrailingVisual>⌘Q</ActionList.TrailingVisual>
+        </ActionList.Item>
+        <ActionList.Item onSelect={() => alert('Edit comment clicked')}>
+          Edit comment
+          <ActionList.TrailingVisual>⌘E</ActionList.TrailingVisual>
+        </ActionList.Item>
+        <ActionList.Divider />
+        <ActionList.Item variant="danger" onSelect={() => alert('Delete file clicked')}>
+          Delete file
+          <ActionList.TrailingVisual>⌘D</ActionList.TrailingVisual>
+        </ActionList.Item>
+      </ActionList>
+    </ActionMenu.Overlay>
+  </ActionMenu>
+)
+
+export const SettingMaxHeight = () => {
+  return (
+    <ActionMenu>
+      <ActionMenu.Button>Open menu</ActionMenu.Button>
+      <ActionMenu.Overlay width="auto" maxHeight="large" overflow="auto">
+        <ActionList>
+          {Array.from({length: 100}, (_, i) => (
+            <ActionList.Item key={`item-${i}`} onSelect={() => alert(`Item ${i + 1} clicked`)}>
+              Item {i + 1}
+            </ActionList.Item>
+          ))}
+        </ActionList>
+      </ActionMenu.Overlay>
+    </ActionMenu>
+  )
+}
+
+export const OnlyInactiveItems = () => (
+  <ActionMenu>
+    <ActionMenu.Button inactive>Open menu</ActionMenu.Button>
+    <ActionMenu.Overlay width="auto">
+      <ActionList>
+        <ActionList.Item onSelect={() => alert('Workflows clicked')} inactiveText="Unavailable due to an outage">
+          Workflows
+          <ActionList.LeadingVisual>
+            <WorkflowIcon />
+          </ActionList.LeadingVisual>
+        </ActionList.Item>
+        <ActionList.Item onSelect={() => alert('Archived items clicked')} inactiveText="Unavailable due to an outage">
+          Archived items
+          <ActionList.LeadingVisual>
+            <ArchiveIcon />
+          </ActionList.LeadingVisual>
+        </ActionList.Item>
+        <ActionList.LinkItem href="/" inactiveText="Unavailable due to an outage">
+          Settings
+          <ActionList.LeadingVisual>
+            <GearIcon />
+          </ActionList.LeadingVisual>
+        </ActionList.LinkItem>
+        <ActionList.Item onSelect={() => alert('Make a copy clicked')} inactiveText="Unavailable due to an outage">
+          Make a copy
+          <ActionList.LeadingVisual>
+            <CopyIcon />
+          </ActionList.LeadingVisual>
+        </ActionList.Item>
+        <ActionList.Divider />
+        <ActionList.Group title="Github projects">
+          <ActionList.LinkItem href="/" inactiveText="Unavailable due to an outage">
+            What&apos;s new
+            <ActionList.LeadingVisual>
+              <RocketIcon />
+            </ActionList.LeadingVisual>
+          </ActionList.LinkItem>
+          <ActionList.LinkItem href="/" inactiveText="Unavailable due to an outage">
+            Give feedback
+            <ActionList.LeadingVisual>
+              <CommentIcon />
+            </ActionList.LeadingVisual>
+          </ActionList.LinkItem>
+          <ActionList.LinkItem href="/" inactiveText="Unavailable due to an outage">
+            GitHub Docs
+            <ActionList.LeadingVisual>
+              <BookIcon />
+            </ActionList.LeadingVisual>
+          </ActionList.LinkItem>
+        </ActionList.Group>
+      </ActionList>
+    </ActionMenu.Overlay>
+  </ActionMenu>
+)

@@ -5,14 +5,13 @@ exports[`Avatar renders consistently 1`] = `
   --avatar-border-width: 1px;
   --avatar-two-margin: calc(var(--avatar-stack-size) * -0.55);
   --avatar-three-margin: calc(var(--avatar-stack-size) * -0.85);
-  --avatar-stack-three-plus-min-width: calc( var(--avatar-stack-size) + calc( calc(var(--avatar-stack-size) + var(--avatar-two-margin)) + calc(var(--avatar-stack-size) + var(--avatar-three-margin)) * 2 ) + calc(var(--avatar-border-width) * 3) );
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   position: relative;
   height: var(--avatar-stack-size);
-  min-width: 38px;
+  min-width: var(--avatar-stack-size);
   --avatar-stack-size: 20px;
 }
 
@@ -22,7 +21,6 @@ exports[`Avatar renders consistently 1`] = `
   display: -ms-flexbox;
   display: flex;
   position: absolute;
-  width: var(--avatar-stack-three-plus-min-width);
 }
 
 .c0 .pc-AvatarItem {
@@ -35,8 +33,6 @@ exports[`Avatar renders consistently 1`] = `
   box-shadow: 0 0 0 var(--avatar-border-width) #ffffff;
   position: relative;
   overflow: hidden;
-  -webkit-transition: margin 0.2s ease-in-out,opacity 0.2s ease-in-out,visibility 0.2s ease-in-out,box-shadow 0.1s ease-in-out;
-  transition: margin 0.2s ease-in-out,opacity 0.2s ease-in-out,visibility 0.2s ease-in-out,box-shadow 0.1s ease-in-out;
 }
 
 .c0 .pc-AvatarItem:first-child {
@@ -74,8 +70,12 @@ exports[`Avatar renders consistently 1`] = `
   min-width: calc( var(--avatar-stack-size) + calc(var(--avatar-stack-size) + var(--avatar-two-margin)) + var(--avatar-border-width) );
 }
 
+.c0.pc-AvatarStack--three {
+  min-width: calc( var(--avatar-stack-size) + calc( calc(var(--avatar-stack-size) + var(--avatar-two-margin)) + calc(var(--avatar-stack-size) + var(--avatar-three-margin)) ) );
+}
+
 .c0.pc-AvatarStack--three-plus {
-  min-width: var(--avatar-stack-three-plus-min-width);
+  min-width: calc( var(--avatar-stack-size) + calc( calc(var(--avatar-stack-size) + var(--avatar-two-margin)) + calc(var(--avatar-stack-size) + var(--avatar-three-margin)) * 2 ) );
 }
 
 .c0.pc-AvatarStack--right {
@@ -107,12 +107,12 @@ exports[`Avatar renders consistently 1`] = `
   flex-direction: row-reverse;
 }
 
-.c0.pc-AvatarStack--right .pc-AvatarStackBody:hover .pc-AvatarItem {
+.c0.pc-AvatarStack--right .pc-AvatarStackBody:not(.pc-AvatarStack--disableExpand):hover .pc-AvatarItem {
   margin-right: 4px!important;
   margin-left: 0 !important;
 }
 
-.c0.pc-AvatarStack--right .pc-AvatarStackBody:hover .pc-AvatarItem:first-child {
+.c0.pc-AvatarStack--right .pc-AvatarStackBody:not(.pc-AvatarStack--disableExpand):hover .pc-AvatarItem:first-child {
   margin-right: 0 !important;
 }
 
@@ -124,11 +124,20 @@ exports[`Avatar renders consistently 1`] = `
   margin-left: 4px;
   opacity: 100%;
   visibility: visible;
-  box-shadow: 0 0 0 4px #ffffff;
+  -webkit-transition: margin 0.2s ease-in-out,opacity 0.2s ease-in-out,visibility 0.2s ease-in-out,box-shadow 0.1s ease-in-out;
+  transition: margin 0.2s ease-in-out,opacity 0.2s ease-in-out,visibility 0.2s ease-in-out,box-shadow 0.1s ease-in-out;
+}
+
+.c0 .pc-AvatarStackBody:not(.pc-AvatarStack--disableExpand):hover .pc-AvatarItem box-shadow:0 0 0 4px function (props) {
+  return: (0,_core.get)(props.theme,path,fallback);
 }
 
 .c0 .pc-AvatarStackBody:not(.pc-AvatarStack--disableExpand):hover .pc-AvatarItem:first-child {
   margin-left: 0;
+}
+
+.c0 .pc-AvatarStack--disableExpand {
+  position: relative;
 }
 
 <span
@@ -167,14 +176,13 @@ exports[`Avatar respects alignRight props 1`] = `
   --avatar-border-width: 1px;
   --avatar-two-margin: calc(var(--avatar-stack-size) * -0.55);
   --avatar-three-margin: calc(var(--avatar-stack-size) * -0.85);
-  --avatar-stack-three-plus-min-width: calc( var(--avatar-stack-size) + calc( calc(var(--avatar-stack-size) + var(--avatar-two-margin)) + calc(var(--avatar-stack-size) + var(--avatar-three-margin)) * 2 ) + calc(var(--avatar-border-width) * 3) );
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   position: relative;
   height: var(--avatar-stack-size);
-  min-width: 38px;
+  min-width: var(--avatar-stack-size);
   --avatar-stack-size: 20px;
 }
 
@@ -184,7 +192,6 @@ exports[`Avatar respects alignRight props 1`] = `
   display: -ms-flexbox;
   display: flex;
   position: absolute;
-  width: var(--avatar-stack-three-plus-min-width);
 }
 
 .c0 .pc-AvatarItem {
@@ -197,8 +204,6 @@ exports[`Avatar respects alignRight props 1`] = `
   box-shadow: 0 0 0 var(--avatar-border-width) #ffffff;
   position: relative;
   overflow: hidden;
-  -webkit-transition: margin 0.2s ease-in-out,opacity 0.2s ease-in-out,visibility 0.2s ease-in-out,box-shadow 0.1s ease-in-out;
-  transition: margin 0.2s ease-in-out,opacity 0.2s ease-in-out,visibility 0.2s ease-in-out,box-shadow 0.1s ease-in-out;
 }
 
 .c0 .pc-AvatarItem:first-child {
@@ -236,8 +241,12 @@ exports[`Avatar respects alignRight props 1`] = `
   min-width: calc( var(--avatar-stack-size) + calc(var(--avatar-stack-size) + var(--avatar-two-margin)) + var(--avatar-border-width) );
 }
 
+.c0.pc-AvatarStack--three {
+  min-width: calc( var(--avatar-stack-size) + calc( calc(var(--avatar-stack-size) + var(--avatar-two-margin)) + calc(var(--avatar-stack-size) + var(--avatar-three-margin)) ) );
+}
+
 .c0.pc-AvatarStack--three-plus {
-  min-width: var(--avatar-stack-three-plus-min-width);
+  min-width: calc( var(--avatar-stack-size) + calc( calc(var(--avatar-stack-size) + var(--avatar-two-margin)) + calc(var(--avatar-stack-size) + var(--avatar-three-margin)) * 2 ) );
 }
 
 .c0.pc-AvatarStack--right {
@@ -269,12 +278,12 @@ exports[`Avatar respects alignRight props 1`] = `
   flex-direction: row-reverse;
 }
 
-.c0.pc-AvatarStack--right .pc-AvatarStackBody:hover .pc-AvatarItem {
+.c0.pc-AvatarStack--right .pc-AvatarStackBody:not(.pc-AvatarStack--disableExpand):hover .pc-AvatarItem {
   margin-right: 4px!important;
   margin-left: 0 !important;
 }
 
-.c0.pc-AvatarStack--right .pc-AvatarStackBody:hover .pc-AvatarItem:first-child {
+.c0.pc-AvatarStack--right .pc-AvatarStackBody:not(.pc-AvatarStack--disableExpand):hover .pc-AvatarItem:first-child {
   margin-right: 0 !important;
 }
 
@@ -286,11 +295,20 @@ exports[`Avatar respects alignRight props 1`] = `
   margin-left: 4px;
   opacity: 100%;
   visibility: visible;
-  box-shadow: 0 0 0 4px #ffffff;
+  -webkit-transition: margin 0.2s ease-in-out,opacity 0.2s ease-in-out,visibility 0.2s ease-in-out,box-shadow 0.1s ease-in-out;
+  transition: margin 0.2s ease-in-out,opacity 0.2s ease-in-out,visibility 0.2s ease-in-out,box-shadow 0.1s ease-in-out;
+}
+
+.c0 .pc-AvatarStackBody:not(.pc-AvatarStack--disableExpand):hover .pc-AvatarItem box-shadow:0 0 0 4px function (props) {
+  return: (0,_core.get)(props.theme,path,fallback);
 }
 
 .c0 .pc-AvatarStackBody:not(.pc-AvatarStack--disableExpand):hover .pc-AvatarItem:first-child {
   margin-left: 0;
+}
+
+.c0 .pc-AvatarStack--disableExpand {
+  position: relative;
 }
 
 <span

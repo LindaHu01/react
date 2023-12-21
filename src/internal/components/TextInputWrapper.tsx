@@ -76,16 +76,16 @@ const renderFocusStyles = (hasTrailingAction: boolean, isInputFocused: boolean) 
       isInputFocused &&
       css`
         border-color: ${get('colors.accent.fg')};
-        outline: none;
-        box-shadow: inset 0 0 0 1px ${get('colors.accent.fg')};
+        outline: 2px solid ${get('colors.accent.fg')};
+        outline-offset: -1px;
       `
     )
   }
   return css`
     &:focus-within {
       border-color: ${get('colors.accent.fg')};
-      outline: none;
-      box-shadow: inset 0 0 0 1px ${get('colors.accent.fg')};
+      outline: 2px solid ${get('colors.accent.fg')};
+      outline-offset: -1px;
     }
   `
 }
@@ -96,13 +96,14 @@ export const TextInputBaseWrapper = styled.span<StyledBaseWrapperProps>`
   color: ${get('colors.fg.default')};
   vertical-align: middle;
   background-color: ${get('colors.canvas.default')};
-  border: 1px solid ${get('colors.border.default')};
+  border: 1px solid var(--control-borderColor-rest, ${get('colors.border.default')});
   border-radius: ${get('radii.2')};
   outline: none;
   box-shadow: ${get('shadows.primer.shadow.inset')};
   display: inline-flex;
   align-items: stretch;
   min-height: 32px;
+  overflow: hidden;
 
   input,
   textarea {
@@ -199,24 +200,16 @@ const TextInputWrapper = styled(TextInputBaseWrapper)<StyledWrapperProps>`
     flex-shrink: 0;
   }
 
-  ${props =>
-    css`
-      padding-left: ${props.hasLeadingVisual ? textInputHorizPadding : 0};
-      padding-right: ${props.hasTrailingVisual && !props.hasTrailingAction ? textInputHorizPadding : 0};
+  ${props => css`
+    padding-left: ${props.hasLeadingVisual ? textInputHorizPadding : 0};
+    padding-right: ${props.hasTrailingVisual && !props.hasTrailingAction ? textInputHorizPadding : 0};
 
-      > input,
-      > select {
-        padding-left: ${!props.hasLeadingVisual ? textInputHorizPadding : 0};
-        padding-right: ${!props.hasTrailingVisual && !props.hasTrailingAction ? textInputHorizPadding : 0};
-      }
-    `}
-
-  ${props =>
-    props.validationStatus === 'warning' &&
-    css`
-      border-color: ${get('colors.attention.emphasis')};
-      ${renderFocusStyles(Boolean(props.hasTrailingAction), Boolean(props.isInputFocused))}
-    `}
+    > input,
+    > select {
+      padding-left: ${!props.hasLeadingVisual ? textInputHorizPadding : 0};
+      padding-right: ${!props.hasTrailingVisual && !props.hasTrailingAction ? textInputHorizPadding : 0};
+    }
+  `}
 
   ${sx};
 `

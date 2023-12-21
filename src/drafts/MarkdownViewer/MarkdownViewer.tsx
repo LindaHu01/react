@@ -55,6 +55,7 @@ type NoninteractiveMarkdownViewerProps = CoreMarkdownViewerProps & {
 
 export type MarkdownViewerProps = NoninteractiveMarkdownViewerProps | InteractiveMarkdownViewerProps
 
+/** @deprecated Will be removed in v37 (https://github.com/primer/react/issues/3604) */
 const MarkdownViewer = ({
   dangerousRenderedHTML,
   loading = false,
@@ -78,7 +79,7 @@ const MarkdownViewer = ({
         await externalOnChange?.(value)
       } catch (error) {
         if (htmlContainer) {
-          htmlContainer.innerHTML = dangerousRenderedHTML.__html
+          htmlContainer.innerHTML = dangerousRenderedHTML.__html as string
         }
       }
     },

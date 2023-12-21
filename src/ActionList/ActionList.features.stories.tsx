@@ -23,6 +23,8 @@ import {
   AlertIcon,
   TableIcon,
   PeopleIcon,
+  FileDirectoryIcon,
+  PlusCircleIcon,
 } from '@primer/octicons-react'
 
 export default {
@@ -41,6 +43,98 @@ export const SimpleList = () => (
   </ActionList>
 )
 
+export const WithVisualListHeading = () => (
+  <ActionList>
+    <ActionList.Heading as="h2">Filter by</ActionList.Heading>
+    <ActionList.Group title="Path">
+      <ActionList.Item onClick={() => {}}>
+        <ActionList.LeadingVisual>
+          <FileDirectoryIcon />
+        </ActionList.LeadingVisual>
+        app/assets/modules
+      </ActionList.Item>
+      <ActionList.Item onClick={() => {}}>
+        <ActionList.LeadingVisual>
+          <FileDirectoryIcon />
+        </ActionList.LeadingVisual>
+        src/react/components
+      </ActionList.Item>
+      <ActionList.Item onClick={() => {}}>
+        <ActionList.LeadingVisual>
+          <FileDirectoryIcon />
+        </ActionList.LeadingVisual>
+        memex/shared-ui/components
+      </ActionList.Item>
+      <ActionList.Item onClick={() => {}}>
+        <ActionList.LeadingVisual>
+          <FileDirectoryIcon />
+        </ActionList.LeadingVisual>
+        views/assets/modules
+      </ActionList.Item>
+    </ActionList.Group>
+
+    <ActionList.Group title="Advanced">
+      <ActionList.Item onClick={() => {}}>
+        <ActionList.LeadingVisual>
+          <PlusCircleIcon />
+        </ActionList.LeadingVisual>
+        Owner
+      </ActionList.Item>
+      <ActionList.Item onClick={() => {}}>
+        <ActionList.LeadingVisual>
+          <PlusCircleIcon />
+        </ActionList.LeadingVisual>
+        Symbol
+      </ActionList.Item>
+      <ActionList.Item onClick={() => {}}>
+        <ActionList.LeadingVisual>
+          <PlusCircleIcon />
+        </ActionList.LeadingVisual>
+        Exclude archived
+      </ActionList.Item>
+    </ActionList.Group>
+  </ActionList>
+)
+
+export const WithCustomHeading = () => (
+  <>
+    <Heading as="h1" id="list-heading" sx={{fontSize: 3, marginX: 3}}>
+      Details
+    </Heading>
+    <ActionList aria-labelledby="list-heading">
+      <ActionList.LinkItem href="https://github.com/primer/react#readme">
+        <ActionList.LeadingVisual>
+          <BookIcon />
+        </ActionList.LeadingVisual>
+        Readme
+      </ActionList.LinkItem>
+      <ActionList.LinkItem href="https://github.com/primer/react/blob/main/LICENSE">
+        <ActionList.LeadingVisual>
+          <LawIcon />
+        </ActionList.LeadingVisual>
+        MIT License
+      </ActionList.LinkItem>
+      <ActionList.LinkItem href="https://github.com/primer/react/stargazers">
+        <ActionList.LeadingVisual>
+          <StarIcon />
+        </ActionList.LeadingVisual>
+        <strong>1.5k</strong> stars
+      </ActionList.LinkItem>
+      <ActionList.LinkItem href="https://github.com/primer/react/watchers">
+        <ActionList.LeadingVisual>
+          <EyeIcon />
+        </ActionList.LeadingVisual>
+        <strong>21</strong> watching
+      </ActionList.LinkItem>
+      <ActionList.LinkItem href="https://github.com/primer/react/network/members">
+        <ActionList.LeadingVisual>
+          <RepoForkedIcon />
+        </ActionList.LeadingVisual>
+        <strong>225</strong> forks
+      </ActionList.LinkItem>
+    </ActionList>
+  </>
+)
 export const WithIcons = () => (
   <ActionList>
     <ActionList.Item>
@@ -175,17 +269,44 @@ export const SingleSelect = () => {
   )
 }
 
+export const InactiveSingleSelect = () => {
+  const [selectedIndex, setSelectedIndex] = React.useState(1)
+  return (
+    <ActionList selectionVariant="single" showDividers role="menu" aria-label="Project">
+      <ActionList.Item role="menuitem" selected={false} inactiveText="Unavailable due to an outage">
+        Inactive item
+      </ActionList.Item>
+      <ActionList.Item
+        role="menuitemradio"
+        selected={selectedIndex === 1}
+        aria-checked={selectedIndex === 1}
+        onSelect={() => setSelectedIndex(1)}
+      >
+        Item 2
+      </ActionList.Item>
+    </ActionList>
+  )
+}
+
 export const MultiSelect = () => {
-  const [selectedIndex, setSelectedIndex] = React.useState(0)
+  const [selectedIndices, setSelectedIndices] = React.useState<number[]>([0])
+  const handleSelect = (index: number) => {
+    if (selectedIndices.includes(index)) {
+      setSelectedIndices(selectedIndices.filter(i => i !== index))
+    } else {
+      setSelectedIndices([...selectedIndices, index])
+    }
+  }
   return (
     <ActionList selectionVariant="multiple" showDividers role="menu" aria-label="Project">
       {projects.map((project, index) => (
         <ActionList.Item
           key={index}
-          role="menuitemradio"
-          selected={index === selectedIndex}
-          aria-checked={index === selectedIndex}
-          onSelect={() => setSelectedIndex(index)}
+          role="menuitemcheckbox"
+          selected={selectedIndices.includes(index)}
+          aria-checked={selectedIndices.includes(index)}
+          onSelect={() => handleSelect(index)}
+          disabled={index === 3 ? true : undefined}
         >
           <ActionList.LeadingVisual>
             <TableIcon />
@@ -194,6 +315,54 @@ export const MultiSelect = () => {
           <ActionList.Description variant="block">{project.scope}</ActionList.Description>
         </ActionList.Item>
       ))}
+    </ActionList>
+  )
+}
+
+export const DisabledSelectedMultiselect = () => (
+  <ActionList selectionVariant="multiple" role="menu" aria-label="Project">
+    <ActionList.Item role="menuitemcheckbox" selected aria-checked disabled>
+      Selected disabled item
+    </ActionList.Item>
+    <ActionList.Item role="menuitemcheckbox" selected={false} aria-checked={false}>
+      Item 2
+    </ActionList.Item>
+  </ActionList>
+)
+
+export const DisabledMultiselect = () => (
+  <ActionList selectionVariant="multiple" role="menu" aria-label="Project">
+    <ActionList.Item role="menuitemcheckbox" selected={false} aria-checked={false} disabled>
+      Disabled item
+    </ActionList.Item>
+    <ActionList.Item role="menuitemcheckbox" selected={false} aria-checked={false}>
+      Item 2
+    </ActionList.Item>
+  </ActionList>
+)
+
+export const InactiveMultiselect = () => {
+  const [selectedIndices, setSelectedIndices] = React.useState<number[]>([0])
+  const handleSelect = (index: number) => {
+    if (selectedIndices.includes(index)) {
+      setSelectedIndices(selectedIndices.filter(i => i !== index))
+    } else {
+      setSelectedIndices([...selectedIndices, index])
+    }
+  }
+  return (
+    <ActionList selectionVariant="multiple" role="menu" aria-label="Project">
+      <ActionList.Item role="menuitem" selected={false} inactiveText="Unavailable due to an outage">
+        Inactive item
+      </ActionList.Item>
+      <ActionList.Item
+        role="menuitemcheckbox"
+        selected={selectedIndices.includes(1)}
+        aria-checked={selectedIndices.includes(1)}
+        onSelect={() => handleSelect(1)}
+      >
+        Item 2
+      </ActionList.Item>
     </ActionList>
   )
 }
@@ -211,6 +380,22 @@ export const DisabledItem = () => {
           onSelect={() => setSelectedIndex(index)}
           disabled={index === 1}
         >
+          <ActionList.LeadingVisual>
+            <TableIcon />
+          </ActionList.LeadingVisual>
+          {project.name}
+          <ActionList.Description variant="block">{project.scope}</ActionList.Description>
+        </ActionList.Item>
+      ))}
+    </ActionList>
+  )
+}
+
+export const InactiveItem = () => {
+  return (
+    <ActionList aria-label="Project">
+      {projects.map((project, index) => (
+        <ActionList.Item key={index} inactiveText={index === 1 ? 'Unavailable due to an outage' : undefined}>
           <ActionList.LeadingVisual>
             <TableIcon />
           </ActionList.LeadingVisual>

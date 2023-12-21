@@ -6,6 +6,8 @@ import {axe, toHaveNoViolations} from 'jest-axe'
 import {behavesAsComponent, checkExports} from '../utils/testing'
 expect.extend(toHaveNoViolations)
 
+/* Dialog Version 2 */
+
 const comp = (
   <Dialog isOpen onDismiss={() => null} aria-labelledby="header">
     <Dialog.Header id="header">Title</Dialog.Header>
@@ -132,6 +134,17 @@ describe('Dialog', () => {
 
     expect(getByTestId('inner')).toBeTruthy()
     fireEvent.click(getByLabelText('Close'))
+
+    expect(queryByTestId('inner')).toBeNull()
+    const triggerButton = getByTestId('trigger-button')
+    expect(document.activeElement).toEqual(triggerButton)
+  })
+
+  it('Returns focus to returnFocusRef on escape', async () => {
+    const {getByTestId, queryByTestId} = HTMLRender(<Component />)
+
+    expect(getByTestId('inner')).toBeTruthy()
+    fireEvent.keyDown(document.body, {key: 'Escape'})
 
     expect(queryByTestId('inner')).toBeNull()
     const triggerButton = getByTestId('trigger-button')
